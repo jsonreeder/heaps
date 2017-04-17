@@ -6,15 +6,27 @@ class BinaryMinHeap
   end
 
   def count
+    @store.count
   end
 
   def extract
+    # Flip first and last
+    @store[0], @store[count - 1] = @store[count - 1], @store[0]
+    # Pop Last
+    extracted = @store.pop
+    # Heapify
+    @store = BinaryMinHeap.heapify_down(@store, 0, count, &prc) if count > 2
+    # Return extracted
+    extracted
   end
 
   def peek
+    @store.first
   end
 
   def push(val)
+    @store.push(val)
+    @store = BinaryMinHeap.heapify_up(@store, count - 1, count, &prc) if count > 1
   end
 
   protected
