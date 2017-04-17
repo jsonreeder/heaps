@@ -36,14 +36,29 @@ class BinaryMinHeap
     child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
     children = child_idxs.map { |el| array[el] }
     parent = array[parent_idx]
-
-    while children.any? { |child| prc.call(child, parent) < 0 }
-      first_child_idx = child_idxs[0]
-      array[parent_idx], array[first_child_idx] = array[first_child_idx], array[parent_idx]
-      parent_idx = first_child_idx
+    # Find which child
+    extreme_child_idx = child_idxs.first
+    extreme_child_idx = child_idxs.last if prc.call(children[0], children[1]) > 0
+    child = array[extreme_child_idx]
+    
+    # Make the switch
+    while !child.nil? && prc.call(child, parent) < 0
+      puts "parent_idx"
+      puts parent_idx
+      puts "extreme_child_idx"
+      puts extreme_child_idx
+      array[parent_idx], array[extreme_child_idx] = array[extreme_child_idx], array[parent_idx]
+      parent_idx = extreme_child_idx
       child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
       children = child_idxs.map { |el| array[el] }
-      parent = array[parent_idx]
+      extreme_child_idx = child_idxs.first
+      extreme_child_idx = child_idxs.last if prc.call(children[0], children[1]) > 0
+      if extreme_child_idx
+        child = array[extreme_child_idx]
+      else
+        child = nil
+      end
+      parent = array[parent_idx] if parent_idx
     end
 
     array
