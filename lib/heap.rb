@@ -44,26 +44,18 @@ class BinaryMinHeap
     prc ||= Proc.new { |el1, el2| el1 <=> el2 }
     child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
     children = child_idxs.map { |el| array[el] }
-    parent = array[parent_idx]
     # Find which child
     child_idx = child_idxs.first
     child_idx = child_idxs.last if child_idxs.length > 1 && prc.call(children[0], children[1]) > 0
-    child = array[child_idx]
     
     # Make the switch
-    while child && prc.call(child, parent) < 0
+    while child_idx && prc.call(array[child_idx], array[parent_idx]) < 0
       array[parent_idx], array[child_idx] = array[child_idx], array[parent_idx]
       parent_idx = child_idx
       child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
       children = child_idxs.map { |el| array[el] }
       child_idx = child_idxs.first
       child_idx = child_idxs.last if child_idxs.length == 2 && prc.call(children[0], children[1]) > 0
-      if child_idx
-        child = array[child_idx]
-      else
-        child = nil
-      end
-      parent = array[parent_idx] if parent_idx
     end
 
     array
@@ -73,7 +65,6 @@ class BinaryMinHeap
     return array if len <= 1
     prc ||= Proc.new { |el1, el2| el1 <=> el2 }
     parent_idx = BinaryMinHeap.parent_index(child_idx)
-
 
     while prc.call(array[child_idx], array[parent_idx]) < 0
       array[parent_idx], array[child_idx] = array[child_idx], array[parent_idx]
