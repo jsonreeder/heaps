@@ -7,10 +7,11 @@ class Array
     heap = BinaryMinHeap.new(&descending)
     self.each { |el| heap.push(el) }
 
-    until sorted.length == self.length
-      sorted << heap.extract
+    self.clear
+    while heap.count > 0
+      self << heap.extract
     end
 
-    sorted
+    self
   end
 end

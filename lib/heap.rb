@@ -15,7 +15,7 @@ class BinaryMinHeap
     # Pop Last
     extracted = @store.pop
     # Heapify
-    @store = BinaryMinHeap.heapify_down(@store, 0, count, &prc) if count > 2
+    @store = BinaryMinHeap.heapify_down(@store, 0, count, &prc) if count > 1
     # Return extracted
     extracted
   end
@@ -50,7 +50,7 @@ class BinaryMinHeap
     parent = array[parent_idx]
     # Find which child
     extreme_child_idx = child_idxs.first
-    extreme_child_idx = child_idxs.last if prc.call(children[0], children[1]) > 0
+    extreme_child_idx = child_idxs.last if child_idxs.length > 1 && prc.call(children[0], children[1]) > 0
     child = array[extreme_child_idx]
     
     # Make the switch
