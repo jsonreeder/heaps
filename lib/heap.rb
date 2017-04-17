@@ -53,7 +53,7 @@ class BinaryMinHeap
     prc ||= Proc.new { |el1, el2| el1 > el2 }
     parent_idx = BinaryMinHeap.parent_index(child_idx)
 
-    while array[parent_idx] < array[child_idx]
+    while  array[child_idx] < array[parent_idx]
       array[parent_idx], array[child_idx] = array[child_idx], array[parent_idx]
       child_idx = parent_idx
       parent_idx = child_idx.zero? ? 0 : BinaryMinHeap.parent_index(child_idx)
