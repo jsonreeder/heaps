@@ -32,11 +32,12 @@ class BinaryMinHeap
   end
 
   def self.heapify_down(array, parent_idx, len = array.length, &prc)
+    prc ||= Proc.new { |el1, el2| el1 < el2 }
     child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
     children = child_idxs.map { |el| array[el] }
     parent = array[parent_idx]
 
-    while children.any? { |child| child < parent }
+    while children.any? { |child| prc.call(child, parent) }
       first_child_idx = child_idxs[0]
       array[parent_idx], array[first_child_idx] = array[first_child_idx], array[parent_idx]
       parent_idx = first_child_idx
@@ -49,5 +50,15 @@ class BinaryMinHeap
   end
 
   def self.heapify_up(array, child_idx, len = array.length, &prc)
+    prc ||= Proc.new { |el1, el2| el1 > el2 }
+    parent_idx = BinaryMinHeap.parent_index(child_idx)
+
+    while array[parent_idx] < array[child_idx]
+      array[parent_idx], array[child_idx] = array[child_idx], array[parent_idx]
+      child_idx = parent_idx
+      parent_idx = child_idx.zero? ? 0 : BinaryMinHeap.parent_index(child_idx)
+    end
+
+    array
   end
 end
