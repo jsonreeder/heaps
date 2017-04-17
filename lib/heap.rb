@@ -10,13 +10,9 @@ class BinaryMinHeap
   end
 
   def extract
-    # Flip first and last
     @store[0], @store[count - 1] = @store[count - 1], @store[0]
-    # Pop Last
     extracted = @store.pop
-    # Heapify
-    @store = BinaryMinHeap.heapify_down(@store, 0, count, &prc) if count > 1
-    # Return extracted
+    @store = BinaryMinHeap.heapify_down(@store, 0, count, &prc)
     extracted
   end
 
@@ -26,7 +22,7 @@ class BinaryMinHeap
 
   def push(val)
     @store.push(val)
-    @store = BinaryMinHeap.heapify_up(@store, count - 1, count, &prc) if count > 1
+    @store = BinaryMinHeap.heapify_up(@store, count - 1, count, &prc)
   end
 
   protected
@@ -44,6 +40,7 @@ class BinaryMinHeap
   end
 
   def self.heapify_down(array, parent_idx, len = array.length, &prc)
+    return array if len <= 1
     prc ||= Proc.new { |el1, el2| el1 <=> el2 }
     child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
     children = child_idxs.map { |el| array[el] }
@@ -73,6 +70,7 @@ class BinaryMinHeap
   end
 
   def self.heapify_up(array, child_idx, len = array.length, &prc)
+    return array if len <= 1
     prc ||= Proc.new { |el1, el2| el1 <=> el2 }
     parent_idx = BinaryMinHeap.parent_index(child_idx)
 
