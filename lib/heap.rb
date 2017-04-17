@@ -43,16 +43,12 @@ class BinaryMinHeap
     
     # Make the switch
     while !child.nil? && prc.call(child, parent) < 0
-      puts "parent_idx"
-      puts parent_idx
-      puts "extreme_child_idx"
-      puts extreme_child_idx
       array[parent_idx], array[extreme_child_idx] = array[extreme_child_idx], array[parent_idx]
       parent_idx = extreme_child_idx
       child_idxs = BinaryMinHeap.child_indices(len, parent_idx)
       children = child_idxs.map { |el| array[el] }
       extreme_child_idx = child_idxs.first
-      extreme_child_idx = child_idxs.last if prc.call(children[0], children[1]) > 0
+      extreme_child_idx = child_idxs.last if child_idxs.length == 2 && prc.call(children[0], children[1]) > 0
       if extreme_child_idx
         child = array[extreme_child_idx]
       else
